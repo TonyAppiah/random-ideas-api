@@ -76,8 +76,8 @@ router.put("/:id", (request, response) => {
       .json({ success: false, error: "Idea not found." });
   }
 
-  idea.text = request.body.text || idea.text;
-  idea.tag = request.body.tag || idea.tag;
+  idea.text = request.body.text || idea.text; //sets idea.text to the text that will be in the PUT request or leaves it as is
+  idea.tag = request.body.tag || idea.tag; //sets idea.tag to the tag that will be in the PUT request or leaves it as is
 
   response.send({ success: true, data: idea });
 });

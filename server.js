@@ -1,7 +1,12 @@
 const express = require("express");
+const connectToDataBase = require("./config/db");
+require("dotenv").config(); //this is to access the .env file and use its variables
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT; // this is a variable from .env
+
+//calling function to connect to DB
+connectToDataBase();
 
 //Body parser middleware :this is so data can be sent when a post request is made
 app.use(express.json());
