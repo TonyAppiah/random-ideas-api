@@ -8,7 +8,7 @@ const port = process.env.PORT; // this is a variable from .env
 //calling function to connect to DB
 connectToDataBase();
 
-//Body parser middleware :this is so data can be sent when a post request is made
+//Body parser middleware :this is so data can be sent when an http request is made request is made
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

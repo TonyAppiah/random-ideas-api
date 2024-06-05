@@ -1,100 +1,79 @@
 // creating api routes
 const express = require("express");
-const router = express.Router();
-
-const ideas = [
-  {
-    id: 1,
-    text: "This is idea 1",
-    tag: "Technology",
-    username: "TonyAppiah",
-    date: "2023-01-02",
-  },
-  {
-    id: 2,
-    text: "This is idea 2",
-    tag: "Invention",
-    username: "ZionAppiah",
-    date: "2023-01-02",
-  },
-  {
-    id: 3,
-    text: "This is idea 3",
-    tag: "Software",
-    username: "EuniceAppiah",
-    date: "2023-01-02",
-  },
-  {
-    id: 4,
-    text: "This is idea 4",
-    tag: "Software",
-    username: "AndyAppiah",
-    date: "2023-01-02",
-  },
-];
+const router = express.Router(); //in order to use the express Router
+const Idea = require("../models/Idea"); //bringing in the model and using that with the methods on it to manipulate data from and to the database
 
 //get all ideas
-router.get("/", (request, response) => {
-  response.send({ success: true, data: ideas }); //or response.json({})
+router.get("/", async (request, response) => {
+  try {
+    const ideas = await Idea.find();
+    response.send({ success: true, data: ideas }); //or response.json({})
+  } catch (error) {
+    response
+      .status(500)
+      .json({ success: false, error: "Something went wrong" });
+  }
 });
 
 //get single idea
-router.get("/:id", (request, response) => {
-  const idea = ideas.find((idea) => idea.id === +request.params.id);
-
-  if (!idea) {
-    return response
-      .status(404)
-      .json({ success: false, error: "Idea not found." });
+router.get("/:id", async (request, response) => {
+  try {
+    const idea = await Idea.findById(request.params.id);
+    response.send({ success: true, data: idea });
+  } catch (error) {
+    response
+      .status(500)
+      .json({ success: false, error: "Something went wrong" });
   }
-
-  response.send({ success: true, data: idea });
 });
 
 //Add an idea
-router.post("/", (request, response) => {
-  const idea = {
-    id: ideas.length + 1,
+router.post("/", async (request, response) => {
+  const idea = new Idea({
     text: request.body.text,
     tag: request.body.tag,
     username: request.body.username,
-    date: new Date().toISOString().slice(0, 10),
-  };
+  });
 
-  ideas.push(idea);
-
-  response.send({ success: true, data: idea });
+  try {
+    await idea.save();
+    response.send({ success: true, data: idea });
+  } catch (error) {
+    response
+      .status(500)
+      .json({ success: false, error: "Something went wrong" });
+  }
 });
 
 //update an idea
-router.put("/:id", (request, response) => {
-  const idea = ideas.find((idea) => idea.id === +request.params.id);
-
-  if (!idea) {
-    return response
-      .status(404)
-      .json({ success: false, error: "Idea not found." });
+router.put("/:id", async (request, response) => {
+  try {
+    const idea = await Idea.findByIdAndUpdate(
+      request.params.id,
+      {
+        text: request.body.text,
+        tag: request.body.tag,
+      },
+      { new: true }
+    );
+    response.send({ success: true, data: idea });
+  } catch (error) {
+    response
+      .status(500)
+      .json({ success: false, error: "Something went wrong" });
   }
-
-  idea.text = request.body.text || idea.text; //sets idea.text to the text that will be in the PUT request or leaves it as is
-  idea.tag = request.body.tag || idea.tag; //sets idea.tag to the tag that will be in the PUT request or leaves it as is
-
-  response.send({ success: true, data: idea });
 });
 
 //Delete an idea
-router.delete("/:id", (request, response) => {
-  const idea = ideas.find((idea) => idea.id === +request.params.id);
-
-  if (!idea) {
-    return response
-      .status(404)
-      .json({ success: false, error: "Idea not found." });
+router.delete("/:id", async (request, response) => {
+  try {
+    await Idea.findByIdAndDelete(request.params.id);
+    response.send({ success: true, data: {} });
+  } catch (error) {
+    response
+      .status(500)
+      .json({ success: false, error: "Something went wrong" });
   }
-
-  ideas.splice(idea, 1);
-
-  response.send({ success: true, data: {} });
 });
 
 module.exports = router;
