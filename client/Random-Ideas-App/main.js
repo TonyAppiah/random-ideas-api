@@ -1,4 +1,5 @@
 import "./style.css";
+import Modal from "./components/Modal";
 
 document.querySelector("#app").innerHTML = `
   <header>
@@ -57,4 +58,26 @@ document.querySelector("#app").innerHTML = `
   </div>
 </div>
 
+<div id="modal" class="modal">
+   <div id="form-modal" class="modal-box">
+      <form id="idea-form">
+        <div class="form-control">
+          <label for="idea-text">Enter a Username</label>
+          <input type="text" name="username" id="username" value="" />
+        </div>
+        <div class="form-control">
+          <label for="idea-text">What's Your Idea?</label>
+          <textarea name="text" id="idea-text"></textarea>
+        </div>
+        <div class="form-control">
+          <label for="tag">Tag</label>
+          <input type="text" name="tag" id="tag" />
+        </div>
+        <button class="btn" type="submit" id="submit">Submit</button>
+      </form>
+   </div>
+</div>
+
 `;
+
+const modal = new Modal();
