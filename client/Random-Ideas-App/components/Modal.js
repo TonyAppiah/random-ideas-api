@@ -8,6 +8,7 @@ class Modal {
   eventListeners() {
     this._modalBtn.addEventListener("click", this.openModal.bind(this));
     window.addEventListener("click", this.outsideClick.bind(this));
+    document.addEventListener("closemodal", () => this.closeModal()); //a custom event listener dispatched to the Modal component from the IdeaForm component by the dispatchEvent method
   }
 
   openModal() {
