@@ -1,29 +1,21 @@
+import IdeasApi from "../services/ideasApi";
+
 class IdeaList {
   constructor() {
     this._ideaListElement = document.querySelector("#idea-list");
-    this._ideas = [
-      {
-        id: 1,
-        text: "first idea",
-        tag: "Technology",
-        username: "Ben",
-        date: "07-03-1992",
-      },
-      {
-        id: 2,
-        text: "second idea",
-        tag: "Business",
-        username: "John",
-        date: "07-03-1992",
-      },
-      {
-        id: 3,
-        text: "third idea",
-        tag: "software",
-        username: "Dean",
-        date: "07-03-1992",
-      },
-    ];
+    this._ideas = [];
+
+    this.getIdeas();
+  }
+
+  async getIdeas() {
+    try {
+      const response = await IdeasApi.getIdeas();
+      this._ideas = response.data.data;
+      this.render();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
@@ -37,7 +29,7 @@ class IdeaList {
             <h3>
                 ${idea.text}        
             </h3>
-            <p class="tag tag-${idea.tag.toLocaleLowerCase()}">${idea.tag}</p>
+            <p class="tag tag-${idea.tag.toLowerCase()}">${idea.tag}</p>
             <p>
                 Posted on<span class="date"> ${idea.date}</span> by
                 <span class="author">${idea.username}</span>

@@ -2,6 +2,7 @@ const express = require("express");
 const connectToDataBase = require("./config/db");
 require("dotenv").config(); //this is to access the .env file and use its variables
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT; // this is a variable from .env
@@ -15,6 +16,14 @@ app.use(express.static(path.join(__dirname, "public")));
 //Body parser middleware :this is so data can be sent when an http request is made
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+//ability to make http requests from any or specific urls
+app.use(
+  cors({
+    origin: ["http://localhost:5000", "http://localhost:5173"],
+    credentials: true,
+  })
+);
 
 // app.get("/", (request, response) => {
 //   response.send("Hello world");
