@@ -1,9 +1,13 @@
+import IdeasApi from "../services/ideasApi";
+import IdeaList from "./IdeaList";
+
 class IdeaForm {
   constructor() {
     this._formModal = document.querySelector("#form-modal");
+    this._ideaList = new IdeaList();
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
 
     // idea object to be sent to the database
@@ -12,6 +16,12 @@ class IdeaForm {
       tag: this._form.elements.tag.value,
       username: this._form.elements.username.value,
     };
+
+    //adds idea to server
+    const newIdea = await IdeasApi.postIdea(idea);
+
+    //adds idea to DOM list
+    this._ideaList.addIdeaToDOM(newIdea.data.data);
 
     this._form.elements.text.value = "";
     this._form.elements.tag.value = "";

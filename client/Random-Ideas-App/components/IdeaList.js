@@ -18,6 +18,11 @@ class IdeaList {
     }
   }
 
+  addIdeaToDOM(idea) {
+    this._ideas.push(idea);
+    this.render();
+  }
+
   render() {
     this._ideaListElement.innerHTML = this._ideas
       .map((idea) => {
