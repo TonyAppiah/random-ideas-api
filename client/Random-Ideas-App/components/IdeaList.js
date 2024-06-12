@@ -32,11 +32,13 @@ class IdeaList {
                 <i class="fa-solid fa-x"></i>
             </button>
             <h3>
-                ${idea.text}        
+                ${
+                  idea.text.charAt(0).toUpperCase() + idea.text.slice(1)
+                }        
             </h3>
             <p class="tag tag-${idea.tag.toLowerCase()}">${idea.tag}</p>
             <p>
-                Posted on<span class="date"> ${idea.date}</span> by
+                Posted on<span class="date"> ${idea.date.slice(0, 10)}</span> by
                 <span class="author">${idea.username}</span>
             </p>
         </div>
